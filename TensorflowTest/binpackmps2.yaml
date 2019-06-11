@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: binpack-mps2
+  labels:
+    app: binpack-mps2
+
+spec:
+  replicas: 3
+
+  selector: # define how the deployment finds the pods it mangages
+    matchLabels:
+      app: binpack-mps2
+
+  template: # define the pods specifications
+    metadata:
+      labels:
+        app: binpack-mps2
+
+    spec:
+      hostIPC: true
+      containers:
+        - name: binpack-mps2
+          image: sakuralbj/mytest:v2
+          env:
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: "0"
+            - name: CUDA_VISIBLE_DEVICES
+              value: "0"
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: compute,utility
+            - name: CUDA_MPS_ACTIVE_THREAD_PERCENTAGE
+              value: "33"
