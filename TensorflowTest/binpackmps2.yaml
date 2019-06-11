@@ -31,4 +31,11 @@ spec:
             - name: NVIDIA_DRIVER_CAPABILITIES
               value: compute,utility
             - name: CUDA_MPS_ACTIVE_THREAD_PERCENTAGE
-              value: "33"
+              value: "30"
+          volumeMounts:
+              - name: nvidia-mps
+                mountPath: /tmp/nvidia-mps
+        volumes:
+              - name: nvidia-mps
+                hostPath:
+                  path: /tmp/nvidia-mps
