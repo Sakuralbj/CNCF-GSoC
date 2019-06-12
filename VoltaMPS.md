@@ -24,8 +24,8 @@ Three components:
 Note that CUDA_VISIBLE_DEVICES should not be set in the client’s environment
 + export CUDA_MPS_PIPE_DIRECTORY=/tmp/nvidia-mps
 + export CUDA_MPS_LOG_DIRECTORY=/tmp/nvidia-log
-##Shutting Down MPS
+####Shutting Down MPS
 + echo quit | nvidia-cuda-mps-control
-##Log file
+####Log file
 + $CUDA_MPS_LOG_DIRECTORY/control.log
 + $CUDA_MPS_LOG_DIRECTORY/server.log
