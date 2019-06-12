@@ -9,4 +9,6 @@ https://github.com/NVIDIA/nvidia-docker/issues/822
 
 https://github.com/NVIDIA/nvidia-docker/issues/810  
 
-https://docs.nvidia.com/deploy/mps/index.html#topic_2_1_2
+https://docs.nvidia.com/deploy/mps/index.html#topic_2_1_2   
+ 
+https://blog.csdn.net/beckham999221/article/details/86644970
