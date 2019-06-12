@@ -1,4 +1,4 @@
-##组成
+## 组成
 
 Three components:
 + Control Daemon Process – The control daemon is responsible for starting and stopping the server, as well as coordinating connections between clients and servers.
@@ -10,29 +10,29 @@ Three components:
 3. Volta MPS supports limited execution resource provisioning for Quality of Service (QoS).
 ![Volta mps](https://ws4.sinaimg.cn/large/006tNc79ly1g3y4rwi9ovj30me0oowgy.jpg)
 
-##环境变量
+## 环境变量
 + CUDA_VISIBLE_DEVICES
 + CUDA_MPS_PIPE_DIRECTORY
 + CUDA_MPS_LOG_DIRECTORY
 + CUDA_DEVICE_MAX_CONNECTIONS
 + CUDA_MPS_ACTIVE_THREAD_PERCENTAGE
 
-##运行mps
+## 运行mps
 
-####Starting MPS control daemon
+#### Starting MPS control daemon
 + export CUDA_VISIBLE_DEVICES=？
 + export CUDA_MPS_PIPE_DIRECTORY=/tmp/nvidia-mps
 + export CUDA_MPS_LOG_DIRECTORY=/tmp/nvidia-log
 + nvidia-cuda-mps-control -d 
 
-####Starting MPS client application
+#### Starting MPS client application
 Note that CUDA_VISIBLE_DEVICES should not be set in the client’s environment
 + export CUDA_MPS_PIPE_DIRECTORY=/tmp/nvidia-mps
 + export CUDA_MPS_LOG_DIRECTORY=/tmp/nvidia-log
 
-####Shutting Down MPS
+#### Shutting Down MPS
 + echo quit | nvidia-cuda-mps-control
 
-####Log file
+#### Log file
 + $CUDA_MPS_LOG_DIRECTORY/control.log
 + $CUDA_MPS_LOG_DIRECTORY/server.log
