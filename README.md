@@ -1,1 +1,1 @@
-# cncf-GSoC
+# CNCF-GSoC
