@@ -21,6 +21,7 @@ Three components:
 
 #### Starting MPS control daemon
 + export CUDA_VISIBLE_DEVICES=？
++ nvidia-smi -i ID -c EXCLUSIVE_PROCESS
 + export CUDA_MPS_PIPE_DIRECTORY=/tmp/nvidia-mps
 + export CUDA_MPS_LOG_DIRECTORY=/tmp/nvidia-log
 + nvidia-cuda-mps-control -d 

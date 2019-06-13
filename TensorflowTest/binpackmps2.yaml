@@ -22,7 +22,7 @@ spec:
       hostIPC: true
       containers:
         - name: binpack-mps2
-          image: sakuralbj/mytest:v2
+          image: sakuralbj/mytest:v2 #使用Image里的dockerfile构建
           env:
             - name: NVIDIA_VISIBLE_DEVICES
               value: "0"
