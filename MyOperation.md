@@ -1,5 +1,5 @@
 1 在node节点上开启mps服务
-+ export CUDA_VISIBLE_DEVICES=？
++ export CUDA_VISIBLE_DEVICES=0
 + nvidia-smi -i 0 -c EXCLUSIVE_PROCESS
 + export CUDA_MPS_PIPE_DIRECTORY=/tmp/nvidia-mps
 + export CUDA_MPS_LOG_DIRECTORY=/tmp/nvidia-log
