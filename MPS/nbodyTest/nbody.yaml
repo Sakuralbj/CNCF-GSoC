@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nbody
+  labels:
+    app: nbody
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nbody
+  template:
+    metadata:
+      labels:
+        app: nbody
+    spec:
+      hostIPC: true
+      containers:
+        - image: registry.cn-hangzhou.aliyuncs.com/tensorflow-samples/nbody
+          resources:
+            limits:
+              # MiB
+              aliyun.com/gpu-mem: 3
+          name: nbody
+          env:
+            - name: CUDA_MPS_ACTIVE_THREAD_PERCENTAGE
+              value: "30"
+
