@@ -23,5 +23,4 @@ spec:
           name: nbody
 #          env:
 #            - name: CUDA_MPS_ACTIVE_THREAD_PERCENTAGE
-#              value: "30" device-plugin注入
-
+#              value: "30"
