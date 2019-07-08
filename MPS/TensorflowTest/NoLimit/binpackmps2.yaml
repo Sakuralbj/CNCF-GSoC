@@ -22,11 +22,11 @@ spec:
       hostIPC: true
       containers:
         - name: binpack-mps2
-          image: sakuralbj/sakuralbj:dynamic #GPU动态增长
+          image: sakuralbj/mytest:v2 #使用Image里的dockerfile构建
           resources:
             limits:
               aliyun.com/gpu-mem: 4
 #          env:
 #            - name: CUDA_MPS_ACTIVE_THREAD_PERCENTAGE
-#              value: "50"
+#              value: "30"
 

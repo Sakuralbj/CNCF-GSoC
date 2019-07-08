@@ -6,5 +6,5 @@
 3. sakuralbj/mytest:v2
     运行tensorflow任务，代码中不对显存进行控制
 4. sakuralbj/sakuralbj:dynamic
-    运行tensorflow任务，
+    运行tensorflow任务，tf_config.gpu_options.allow_growth = True动态控制显存使用
 

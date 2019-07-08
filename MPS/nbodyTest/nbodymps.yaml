@@ -19,10 +19,9 @@ spec:
         - image: registry.cn-hangzhou.aliyuncs.com/tensorflow-samples/nbody
           resources:
             limits:
-              # MiB
-              aliyun.com/gpu-mem: 3
+              aliyun.com/gpu-mem: 4
           name: nbody
-          env:
-            - name: CUDA_MPS_ACTIVE_THREAD_PERCENTAGE
-              value: "30"
+#          env:
+#            - name: CUDA_MPS_ACTIVE_THREAD_PERCENTAGE
+#              value: "30" device-plugin注入
 
