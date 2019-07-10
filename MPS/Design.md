@@ -33,10 +33,18 @@ draft: false
 ### 步骤
 1. 在程序入口处设定一个保存MPS组件通信通道的路径。部署时由部署者设定，在node上启用时保持一致。  
 ![MPS pipie](https://ws3.sinaimg.cn/large/006tNc79ly1g4uzt05dftj31g205s43r.jpg)  
-设定通道入口路径，mps-pipe的值表示要传入的交互路径。
-![入口处设定](https://ws2.sinaimg.cn/large/006tNc79ly1g4uzw2b2sej30k805qdhh.jpg)
-  
-2.在DevicePlugin结构体设计
+设定通道入口路径，mps-pipe的值表示要传入的交互路径。  
+
+在device-plugin的部署文件中传入这个全局变量  
+``` 
+command:
+          - gpushare-device-plugin-v2
+          - -logtostderr
+          - --v=5
+          - --memory-unit=GiB
+          - --mps-pipe=/root/nvidia-mps
+ ``` 
+2.DevicePlugin结构体设计
 ``` 
 type NvidiaDevicePlugin struct {
 	devs         []*pluginapi.Device
@@ -87,26 +95,27 @@ type NvidiaDevicePlugin struct {
   
    在Envs字段传入要注入容器的环境变量,mount字段传入容器的volume信息。
      ``` 
+         
      for _, req := range reqs.ContainerRequests {
-      			reqGPU := uint(len(req.DevicesIDs))
-      			mount := pluginapi.Mount{
-      				ContainerPath: m.mpspipe,
-      				HostPath:      m.mpspipe,
-      			}
-      			response := pluginapi.ContainerAllocateResponse{
-      				Envs: map[string]string{
-      					envNVGPU:               candidateDevID,
-      					EnvResourceIndex:       fmt.Sprintf("%d", id),
-      					EnvResourceByPod:       fmt.Sprintf("%d", podReqGPU),
-      					EnvResourceByContainer: fmt.Sprintf("%d", reqGPU),
-      					EnvResourceByDev:       fmt.Sprintf("%d", getGPUMemory()),
-      					EnvPipe:                fmt.Sprintf(m.mpspipe),
-      					EnvPercentage:          fmt.Sprint(100 * reqGPU / getGPUMemory()),
-      				},
-      				Mounts: []*pluginapi.Mount{&mount},
-      			}
-      			responses.ContainerResponses = append(responses.ContainerResponses, &response)
-      		}
+   			reqGPU := uint(len(req.DevicesIDs))
+   			mount := pluginapi.Mount{
+   				ContainerPath: m.mpspipe,
+   				HostPath:      m.mpspipe,
+   			}
+   			response := pluginapi.ContainerAllocateResponse{
+   				Envs: map[string]string{
+   					envNVGPU:               candidateDevID,
+   					EnvResourceIndex:       fmt.Sprintf("%d", id),
+   					EnvResourceByPod:       fmt.Sprintf("%d", podReqGPU),
+   					EnvResourceByContainer: fmt.Sprintf("%d", reqGPU),
+   					EnvResourceByDev:       fmt.Sprintf("%d", getGPUMemory()),
+   					EnvPipe:                fmt.Sprintf(m.mpspipe),
+   					EnvPercentage:          fmt.Sprint(100 * reqGPU / getGPUMemory()),
+   				},
+   				Mounts: []*pluginapi.Mount{&mount},
+   			}
+   			responses.ContainerResponses = append(responses.ContainerResponses, &response)
+   		}
      ```   
      说明:EnvResourceByContainer代表容器请求GPUmemory,EnvPipe为CUDA_MPS_PIPE_DIRECTORY，
      EnvPercentage代表CUDA_MPS_ACTIVE_THREAD_PERCENTAGE，控制gpu资源使用量。
