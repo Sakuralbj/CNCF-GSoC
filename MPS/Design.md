@@ -94,7 +94,7 @@ type NvidiaDevicePlugin struct {
    ```
   
    在Envs字段传入要注入容器的环境变量,mount字段传入容器的volume信息。
-     ``` 
+     
          
      for _, req := range reqs.ContainerRequests {
    			reqGPU := uint(len(req.DevicesIDs))
@@ -116,8 +116,8 @@ type NvidiaDevicePlugin struct {
    			}
    			responses.ContainerResponses = append(responses.ContainerResponses, &response)
    		}
-     ```   
-     说明:EnvResourceByContainer代表容器请求GPUmemory,EnvPipe为CUDA_MPS_PIPE_DIRECTORY，
+       
+  说明:EnvResourceByContainer代表容器请求GPUmemory,EnvPipe为CUDA_MPS_PIPE_DIRECTORY，
      EnvPercentage代表CUDA_MPS_ACTIVE_THREAD_PERCENTAGE，控制gpu资源使用量。
      
 ### 流程图
