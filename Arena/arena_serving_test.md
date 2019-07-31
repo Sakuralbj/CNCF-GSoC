@@ -9,11 +9,11 @@ tar xvf mnist.tar.gz
 ### 4. 部署tf-serving
 4.1 gpucount场景  
 
-arena serve tensorflow --servingName=mymnist2 --modelName=mnist2  --gpus=1   --image=tensorflow/serving:latest-gpu --data=tfmodel:/tfmodel --modelPath=/tfmodel/mnist --versionPolicy=specific:1  --loglevel=debug  
+arena serve tensorflow --servingName=mymnist1 --modelName=mnist1  --gpus=1   --image=tensorflow/serving:latest-gpu --data=tfmodel:/tfmodel --modelPath=/tfmodel/mnist --versionPolicy=specific:1  --loglevel=debug  
 
 4.2 gpumemory场景  
 
-arena serve tensorflow --servingName=mymnist3 --modelName=mnist3 --gpumemory=3 --image=tensorflow/serving:latest-gpu  --data=tfmodel:/tfmodel --modelPath=/tfmodel/mnist --versionPolicy=specific:2  --loglevel=debug  
+arena serve tensorflow --servingName=mymnist2 --modelName=mnist2 --gpumemory=3 --image=tensorflow/serving:latest-gpu  --enableIstio --data=tfmodel:/tfmodel --modelPath=/tfmodel/mnist --versionPolicy=specific:2  
 
 ### 5.进行测试
 5.1 arena serve list 得到clusterip和port  
