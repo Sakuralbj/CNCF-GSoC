@@ -1,4 +1,4 @@
-This guide walks through the steps required to deploy and serve a TensorFlow model with gpu using Kubernetes (K8s).
+This guide walks through the steps required to deploy and serve a TensorFlow model with GPU using Kubernetes (K8s).
 
 1\. Setup
 
@@ -67,9 +67,9 @@ tfmodel  ReadWriteMany this is tfmodel for mnist  tester  31s
 ```
 
 
-3\. Tensorflow serving with gpus
+3\. Tensorflow serving with GPU
 
-You can deploy and serve a Tensorflow model with gpu
+You can deploy and serve a Tensorflow model with GPU
 
 Submit tensorflow serving job to deploy and serve machine learning models using the following command.
 
@@ -107,16 +107,24 @@ Options inherited from parent commands
       --pprof                   enable cpu profile      
 ```
 
+3.1\. Submit tensorflow serving job with GPUCount  
+Before you submit the serving task,make sure you have GPU in your cluster and you have deployed [k8s-device-plugin](ttps://github.com/NVIDIA/k8s-device-plugin#preparing-your-gpu-nodes)    
+Using arena top node to see the GPUUsage of your cluster.
 For example, you can submit a Tensorflow-GPU model with specific version policy as below.
 
 ```
-arena serve tensorflow --servingName=mymnist --modelName=mnist --image=tensorflow/serving:latest-gpu  --data=tfmodel:/tfmodel --modelPath=/tfmodel/mnist --versionPolicy=specific:1  --loglevel=debug
+arena serve tensorflow --servingName=mymnist --modelName=mnist --gpus=1 --image=tensorflow/serving:latest-gpu  --data=tfmodel:/tfmodel --modelPath=/tfmodel/mnist --versionPolicy=specific:1  --loglevel=debug
 ```
+
+Before you submit the task.You can use arena top node to view GPU resource usage in the cluster.If the GPU resource can satisfy the request of task,you can submit the task.
 
 Once this command is triggered, one Kubernetes service will be created to expose gRPC and RESTful APIs of mnist model.
 
-
- 
+3.2\. Submit tensorflow serving job with GPUMemory
+```
+arena serve tensorflow --name=mymnist2 --model-name=mnist2 --gpumemory=3 --image=tensorflow/serving:latest-gpu   --data=tfmodel:/tfmodel --model-path=/tfmodel/mnist --versionPolicy=specific:2  
+ ```  
+ Before you submit the task,make sure you have deplooy GPUShare
 
 4\. List all the serving jobs
 
