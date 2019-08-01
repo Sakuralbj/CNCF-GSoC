@@ -109,41 +109,58 @@ Options inherited from parent commands
 
 3.1\. Submit tensorflow serving job with GPUCount  
 Before you submit the serving task,make sure you have GPU in your cluster and you have deployed [k8s-device-plugin](ttps://github.com/NVIDIA/k8s-device-plugin#preparing-your-gpu-nodes)    
-Using arena top node to see the GPUUsage of your cluster.
+Using arena top node to see the GPUUsage of your cluster.If your cluster have enough GPU resource,you can submit a serving task.  
+
 For example, you can submit a Tensorflow-GPU model with specific version policy as below.
 
 ```
 arena serve tensorflow --servingName=mymnist --modelName=mnist --gpus=1 --image=tensorflow/serving:latest-gpu  --data=tfmodel:/tfmodel --modelPath=/tfmodel/mnist --versionPolicy=specific:1  --loglevel=debug
 ```
 
-Before you submit the task.You can use arena top node to view GPU resource usage in the cluster.If the GPU resource can satisfy the request of task,you can submit the task.
 
 Once this command is triggered, one Kubernetes service will be created to expose gRPC and RESTful APIs of mnist model.
 
 3.2\. Submit tensorflow serving job with GPUMemory
+
+Before you submit the task,make sure you have deplooy [GPUShare](https://github.com/AliyunContainerService/gpushare-scheduler-extender).  
+```
+# kubectl get po -n kube-system|grep gpu 
+gpushare-device-plugin-ds-4src6                              1/1     Running 
+gpushare-schd-extender-6866868cf5-bb9fc                      1/1     Running
+```
+Using arena top node -s to see the gpu memory usage of your cluster.
+```
+# arena top node -s
+NAME                                IPADDRESS     GPU0(Allocated/Total)  
+cn-shanghai.i-uf61h64dz1tmlob9hmtb  192.168.0.71  3/15                   
+--------------------------------------------------------------------------
+Allocated/Total GPU Memory In Cluster:
+3/15 (GiB) (20%)  
+```
+If your cluster have enough gpu memory resource ,you can submit a task as below.
 ```
 arena serve tensorflow --name=mymnist2 --model-name=mnist2 --gpumemory=3 --image=tensorflow/serving:latest-gpu   --data=tfmodel:/tfmodel --model-path=/tfmodel/mnist --versionPolicy=specific:2  
  ```  
- Before you submit the task,make sure you have deplooy GPUShare
-
+ Once this command is triggered, one Kubernetes service will be created to expose gRPC and RESTful APIs of mnist model.The task will require the same gpu memory as you request.  
+ 
 4\. List all the serving jobs
 
 You can use the following command to list all the serving jobs.
 
 ```
 # arena serve list
-  NAME        VERSION  STATUS
-  mymnist-v1  v1       DEPLOYED
+  NAME      TYPE        VERSION  DESIRED  AVAILABLE  ENDPOINT_ADDRESS  PORTS
+  mymnist1  TENSORFLOW           1        1          172.19.15.32      serving:8500,http-serving:8501
+  mymnist2  TENSORFLOW           1        1          172.19.7.104      serving:8500,http-serving:8501
 ```
 
 
-```
 
-7\. Test RESTful APIs of serving models 
+
+5\. Test RESTful APIs of serving models 
 
 Deploy the `sleep` pod so you can use `curl` to test above serving models via RESTful APIs.
 
-If you disable Istio, run the following:
 ```
 # cat <<EOF | kubectl create -f -
 apiVersion: extensions/v1beta1
@@ -165,27 +182,7 @@ spec:
 EOF
 ```
 
-If you enable Istio, run the following:
-```
-# cat <<EOF | istioctl kube-inject -f - | kubectl create -f -
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: sleep
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: sleep
-    spec:
-      containers:
-      - name: sleep
-        image: tutum/curl
-        command: ["/bin/sleep","infinity"]
-        imagePullPolicy: IfNotPresent
-EOF
-```
+
 
 Find the name of  `sleep` pod and enter into this pod, for example:
 
