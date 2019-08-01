@@ -119,7 +119,7 @@ arena serve tensorflow --name=mymnist1 --model-name=mnist1  --gpus=1   --image=t
 ```
 
 
-Once this command is triggered, one Kubernetes service will be created to expose gRPC and RESTful APIs of mnist model.
+Once this command is triggered, one Kubernetes service will be created to expose gRPC and RESTful APIs of mnist model.The task will assume the same gpus as it request.
 
 3.2\. Submit tensorflow serving job with GPUMemory
 
@@ -144,7 +144,7 @@ If your cluster have enough gpu memory resource ,you can submit a task as below.
 ```
 arena serve tensorflow --name=mymnist2 --model-name=mnist2 --gpumemory=3 --image=tensorflow/serving:latest-gpu   --data=tfmodel:/tfmodel --model-path=/tfmodel/mnist --versionPolicy=specific:2  
  ```  
-Once this command is triggered, one Kubernetes service will be created to expose gRPC and RESTful APIs of mnist model.The task will require the same gpu memory as you request.  
+Once this command is triggered, one Kubernetes service will be created to expose gRPC and RESTful APIs of mnist model.The task will assume the same gpu memory as it request.  
  
 4\. List all the serving jobs
 
