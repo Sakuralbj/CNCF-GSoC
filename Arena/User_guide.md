@@ -1,4 +1,4 @@
-This guide walks through the steps required to deploy and serve a TensorFlow model with GPU using Kubernetes (K8s).
+This guide walks through the steps required to deploy and serve a TensorFlow model with GPU using Kubernetes (K8s) and Arena.
 
 1\. Setup
 
@@ -108,13 +108,14 @@ Options inherited from parent commands
 ```
 
 3.1\. Submit tensorflow serving job with GPUCount  
+
 Before you submit the serving task,make sure you have GPU in your cluster and you have deployed [k8s-device-plugin](ttps://github.com/NVIDIA/k8s-device-plugin#preparing-your-gpu-nodes)    
-Using arena top node to see the GPUUsage of your cluster.If your cluster have enough GPU resource,you can submit a serving task.  
+Using arena top node to see the GPU resource of your cluster.If your cluster have enough GPU resource,you can submit a serving task.  
 
 For example, you can submit a Tensorflow-GPU model with specific version policy as below.
 
 ```
-arena serve tensorflow --servingName=mymnist --modelName=mnist --gpus=1 --image=tensorflow/serving:latest-gpu  --data=tfmodel:/tfmodel --modelPath=/tfmodel/mnist --versionPolicy=specific:1  --loglevel=debug
+arena serve tensorflow --name=mymnist1 --model-name=mnist1  --gpus=1   --image=tensorflow/serving:latest-gpu --data=tfmodel:/tfmodel --model-path=/tfmodel/mnist --versionPolicy=specific:1  --loglevel=debug  
 ```
 
 
@@ -122,13 +123,15 @@ Once this command is triggered, one Kubernetes service will be created to expose
 
 3.2\. Submit tensorflow serving job with GPUMemory
 
-Before you submit the task,make sure you have deplooy [GPUShare](https://github.com/AliyunContainerService/gpushare-scheduler-extender).  
+Before you submit the task,make sure you have deployed [GPUShare](https://github.com/AliyunContainerService/gpushare-scheduler-extender).  
+
 ```
 # kubectl get po -n kube-system|grep gpu 
 gpushare-device-plugin-ds-4src6                              1/1     Running 
 gpushare-schd-extender-6866868cf5-bb9fc                      1/1     Running
-```
-Using arena top node -s to see the gpu memory usage of your cluster.
+```  
+
+Using arena top node -s to see the gpu memory usage of your cluster.  
 ```
 # arena top node -s
 NAME                                IPADDRESS     GPU0(Allocated/Total)  
@@ -141,7 +144,7 @@ If your cluster have enough gpu memory resource ,you can submit a task as below.
 ```
 arena serve tensorflow --name=mymnist2 --model-name=mnist2 --gpumemory=3 --image=tensorflow/serving:latest-gpu   --data=tfmodel:/tfmodel --model-path=/tfmodel/mnist --versionPolicy=specific:2  
  ```  
- Once this command is triggered, one Kubernetes service will be created to expose gRPC and RESTful APIs of mnist model.The task will require the same gpu memory as you request.  
+Once this command is triggered, one Kubernetes service will be created to expose gRPC and RESTful APIs of mnist model.The task will require the same gpu memory as you request.  
  
 4\. List all the serving jobs
 
@@ -154,10 +157,33 @@ You can use the following command to list all the serving jobs.
   mymnist2  TENSORFLOW           1        1          172.19.7.104      serving:8500,http-serving:8501
 ```
 
+5\. View the GPU usage of cluster.
+You can use arena top node to view the GPU usage of your k8s cluster.
+```
+# arena top node . 
+[root@iZuf69zddmom136duk79quZ arena]# arena top node
+NAME                                IPADDRESS     ROLE    STATUS  GPU(Total)  GPU(Allocated)  GPUShare
+cn-shanghai.i-uf61h64dz1tmlob9hmtb  192.168.0.71  <none>  ready   1           1               Shareable
+cn-shanghai.i-uf61h64dz1tmlob9hmtc  192.168.0.70  <none>  ready   1           1               N/A
+------------------------------------------------------------------------------------------------
+Allocated/Total GPUs In Cluster:
+2/2 (100%)  
+```
+  
+If you want to view the GPU memory usage,you can use arena top node -s.
+```
+# arena top node -s . 
+[root@iZuf69zddmom136duk79quZ arena]# arena top node -s
+NAME                                IPADDRESS     GPU0(Allocated/Total)  
+cn-shanghai.i-uf61h64dz1tmlob9hmtb  192.168.0.71  3/15                   
+--------------------------------------------------------------------------
+Allocated/Total GPU Memory In Cluster:
+3/15 (GiB) (20%)  
+```
 
+If you want to view the datails of pod,you can use arena top node -d or arena top node -d -s to view it.
 
-
-5\. Test RESTful APIs of serving models 
+6\. Test RESTful APIs of serving models 
 
 Deploy the `sleep` pod so you can use `curl` to test above serving models via RESTful APIs.
 
@@ -208,7 +234,7 @@ So you may get response as below. It means the model predicts the input data as 
 }
 ```
 
-8\. Delete one serving job
+7\. Delete one serving job
 
 You can use the following command to delete a tfserving job and its associated pods
                                      
