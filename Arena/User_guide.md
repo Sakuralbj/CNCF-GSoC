@@ -109,7 +109,7 @@ Options inherited from parent commands
 
 3.1\. Submit tensorflow serving job with GPUCount  
 
-Before you submit the serving task,make sure you have GPU in your cluster and you have deployed [k8s-device-plugin](ttps://github.com/NVIDIA/k8s-device-plugin#preparing-your-gpu-nodes)    
+Before you submit the serving task,make sure you have GPU in your cluster and you have deployed [k8s-device-plugin](https://github.com/NVIDIA/k8s-device-plugin#preparing-your-gpu-nodes)    
 Using arena top node to see the GPU resource of your cluster.If your cluster have enough GPU resource,you can submit a serving task.  
 
 For example, you can submit a Tensorflow-GPU model with specific version policy as below.
