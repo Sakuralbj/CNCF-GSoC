@@ -171,7 +171,7 @@ Allocated/Total GPUs In Cluster:
 2/2 (100%)  
 ```
 
-If you want to view the details of pod using gpu,you cabn use arena top node -d
+If you want to view the details of pod using gpu,you can use arena top node -d
 ```
 NAME:       cn-shanghai.i-uf61h64dz1tmlob9hmtc
 IPADDRESS:  192.168.0.70
@@ -193,7 +193,7 @@ NAME                                IPADDRESS     GPU0(Allocated/Total)
 cn-shanghai.i-uf61h64dz1tmlob9hmtb  192.168.0.71  9/15                   
 --------------------------------------------------------------------------
 Allocated/Total GPU Memory In GPUShare Node:
-9/15 (GiB) (20%)  
+9/15 (GiB) (60%)  
 ```
 
 If you want to view the datails of pod using gpumemory,you can use arena top node -d -s to view it.
