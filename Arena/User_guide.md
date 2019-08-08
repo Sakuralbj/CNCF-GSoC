@@ -284,6 +284,10 @@ So you may get response as below. It means the model predicts the input data as 
 You can use the following command to delete a tfserving job and its associated pods
                                      
 ```
-# arena serve delete mymnist-v1
-release "mymnist-v1" deleted
+# arena serve delete mymnist1
+configmap "mymnist1-tensorflow-serving-cm" deleted
+service "mymnist1-tensorflow-serving" deleted
+deployment.extensions "mymnist1-tensorflow-serving" deleted
+configmap "mymnist1-tf-serving" deleted
+INFO[0000] The Serving job mymnist1 has been deleted successfully
 ```
