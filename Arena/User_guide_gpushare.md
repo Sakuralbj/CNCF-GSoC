@@ -1,75 +1,25 @@
-This guide walks through the steps required to deploy and serve a TensorFlow model with GPU using Kubernetes (K8s) and Arena.
+This guide walks through the steps required to deploy and serve a TensorFlow model with GPUMemory using Kubernetes (K8s)、GPUShare and Arena.
 
-1\. Setup
-
-Before using `Arena` for TensorFlow serving with GPU, we need to setup the environment including Kubernetes cluster.
-
-Make sure that your Kubernetes cluster is running,and there is  gpu resource in your cluster.
-
-
-2\. Create Persistent Volume for Model Files
-
-Create /tfmodel in the NFS Server, and prepare mnist models by following the command:
-
+1\. Deploy [GPUShare](https://github.com/AliyunContainerService/gpushare-scheduler-extender).
+Make sure GPUShare is deployed.
 ```
-mount -t nfs -o vers=4.0 NFS_SERVER_IP:/ /tfmodel/
-wget https://github.com/osswangxining/tensorflow-sample-code/raw/master/models/tensorflow/mnist.tar.gz
-tar xvf mnist.tar.gz
-``` 
+# kubectl get po -n kube-system|grep gpu 
+gpushare-device-plugin-ds-4src6                              1/1     Running 
+gpushare-schd-extender-6866868cf5-bb9fc                      1/1     Running
+```  
 
-Then create Persistent Volume and Persistent Volume Claim by following the command (using NFS as sample):
+2\. The design of tf-serving with GPUShare. 
 
-Persistent Volume:
-```
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: tfmodel
-  labels:
-    tfmodel: nas-mnist
-spec:
-  persistentVolumeReclaimPolicy: Retain
-  capacity:
-    storage: 10Gi
-  accessModes:
-  - ReadWriteMany
-  nfs:
-    server: NFS_SERVER_IP
-    path: "/tfmodel"
-```
+2.1 per_process_gpu_memory_fraction
+Fraction that each process occupies of the GPU memory space the value is between 0.0 and 1.0 (with 0.0 as the default)   
+If 1.0, the server will allocate all the memory when the server starts,   
+If 0.0, Tensorflow will automatically select a valupe.
 
-Persistent Volume Claim:
+2.2 The design  diagram.
 
-```
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: tfmodel
-  annotations:
-    description: "this is tfmodel for mnist"
-    owner: tester
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-       storage: 5Gi
-  selector:
-    matchLabels:
-      tfmodel: nas-mnist
-```
+3\. Tensorflow serving with GPUMemory
 
-Check the data volume:
-```
-arena data list
-NAME    ACCESSMODE     DESCRIPTION                OWNER   AGE
-tfmodel  ReadWriteMany this is tfmodel for mnist  tester  31s
-```
-
-
-3\. Tensorflow serving with GPU
-
-You can deploy and serve a Tensorflow model with GPU.If you want to serve a Tensorflow model with GPUMemory,please look at [GPUShare_UserGuide](User_guide_gpushare.md)
+You can deploy and serve a Tensorflow model with GPUMemory.
 
 Submit tensorflow serving job to deploy and serve machine learning models using the following command.
 
@@ -107,71 +57,57 @@ Options inherited from parent commands
       --pprof                   enable cpu profile      
 ```
 
-3.1\. View the GPU resource of your cluster 
 
-Before you submit the serving task,make sure you have GPU in your cluster and you have deployed [k8s-device-plugin](https://github.com/NVIDIA/k8s-device-plugin#preparing-your-gpu-nodes)    
-Using arena top node to see the GPU resource of your cluster.
+Before you submit the serving task,make sure you have enough GPUMemory in your GPUShare nodes.  
+Using arena top node -s to see the GPUMemory resource of your GPUShare nodes.
+ 
 ```
-# arena top node
-NAME                                IPADDRESS     ROLE    STATUS  GPU(Total)  GPU(Allocated) 
-cn-shanghai.i-uf61h64dz1tmlob9hmtb  192.168.0.71  <none>  ready   1           0               
-cn-shanghai.i-uf61h64dz1tmlob9hmtc  192.168.0.70  <none>  ready   1           0               
-cn-shanghai.i-uf6347ba9krw8hj5yvsy  192.168.0.67  master  ready   0           0               
-cn-shanghai.i-uf662a07bhojl329pity  192.168.0.68  master  ready   0           0               
-cn-shanghai.i-uf69zddmom136duk79qu  192.168.0.69  master  ready   0           0               
--------------------------------------------------------------------------------------------
-Allocated/Total GPUs In Cluster:
-0/2 (0%)  
+# arena top node -s
+NAME                                IPADDRESS     GPU0(Allocated/Total)  
+cn-shanghai.i-uf61h64dz1tmlob9hmtb  192.168.0.71  0/15                   
+--------------------------------------------------------------------------
+Allocated/Total GPU Memory In GPUShare Node:
+0/15 (GiB) (0%)  
+```
+
+If your cluster have enough gpu memory resource ,you can submit a task as below.
+```
+arena serve tensorflow --name=mymnist2 --model-name=mnist2 --gpumemory=3 --image=tensorflow/serving:latest-gpu   --data=tfmodel:/tfmodel --model-path=/tfmodel/mnist --versionPolicy=specific:2  
+ ```  
+Once this command is triggered, one Kubernetes service will be created to expose gRPC and RESTful APIs of mnist model.The task will assume the same gpu memory as it request.     
+
+```
+# arena top node -s
+NAME                                IPADDRESS     GPU0(Allocated/Total)  
+cn-shanghai.i-uf61h64dz1tmlob9hmtb  192.168.0.71  3/15                   
+--------------------------------------------------------------------------
+Allocated/Total GPU Memory In GPUShare Node:
+3/15 (GiB) (20%)  
+
 ```  
-If your cluster have enough GPU resource,you can submit a serving task.  
-
-3.2\. Submit tensorflow serving task  
-you can submit a Tensorflow-GPU model with specific version policy as below.
-
+If you want to see the details of pod ,you can use arena top node -s -d.  
 ```
-arena serve tensorflow --name=mymnist1 --model-name=mnist1  --gpus=1   --image=tensorflow/serving:latest-gpu --data=tfmodel:/tfmodel --model-path=/tfmodel/mnist --versionPolicy=specific:1    
+#arena top node -s -d
 
+NAME:       cn-shanghai.i-uf61h64dz1tmlob9hmtb
+IPADDRESS:  192.168.0.71
+
+NAME                                          NAMESPACE  GPU0(Allocated)  
+mymnist2-tensorflow-serving-7446c98547-qmtrn  default    3                
+Allocated :                                   3 (20%)    
+Total :                                       15         
+------------------------------------------------------------------
+
+
+Allocated/Total GPU Memory In GPUShare Node:
+3/15 (GiB) (20%)  
 ```
-
-Once this command is triggered, one Kubernetes service will be created to expose gRPC and RESTful APIs of mnist model.The task will assume the same gpus as it request.
-After the command,using arena top node to see the gpu resource of the cluster.
-```
-# arena top node
-NAME                                IPADDRESS     ROLE    STATUS  GPU(Total)  GPU(Allocated)  
-cn-shanghai.i-uf61h64dz1tmlob9hmtb  192.168.0.71  <none>  ready   1           0               
-cn-shanghai.i-uf61h64dz1tmlob9hmtc  192.168.0.70  <none>  ready   1           1               
-cn-shanghai.i-uf6347ba9krw8hj5yvsy  192.168.0.67  master  ready   0           0               
-cn-shanghai.i-uf662a07bhojl329pity  192.168.0.68  master  ready   0           0               
-cn-shanghai.i-uf69zddmom136duk79qu  192.168.0.69  master  ready   0           0               
--------------------------------------------------------------------------------------------
-Allocated/Total GPUs In Cluster:
-1/2 (50%)  
-
-```
-If you want to see the details of pod ,you can use arena top node -d.
-```
-#arena top node -d
-NAME:       cn-shanghai.i-uf61h64dz1tmlob9hmtc
-IPADDRESS:  192.168.0.70
-ROLE:       <none>
-
-NAMESPACE  NAME                                          GPU REQUESTS   
-default    mymnist1-tensorflow-serving-76d5c7c8fc-2kwpw  1             
-
-Total GPUs In Node cn-shanghai.i-uf61h64dz1tmlob9hmtc:      1         
-Allocated GPUs In Node cn-shanghai.i-uf61h64dz1tmlob9hmtc:  1 (100%)  
-```
-
 4\. List all the serving jobs
-
-You can use the following command to list all the serving jobs.
-
 ```
-# arena serve list
-  NAME      TYPE        VERSION  DESIRED  AVAILABLE  ENDPOINT_ADDRESS  PORTS
-  mymnist1  TENSORFLOW           1        1          172.19.10.38      serving:8500,http-serving:8501
-```
-  
+#arena serve list
+NAME      TYPE        VERSION  DESIRED  AVAILABLE  ENDPOINT_ADDRESS  PORTS
+mymnist2  TENSORFLOW           1        1          172.19.0.222      serving:8500,http-serving:8501
+```  
 
 5\. Test RESTful APIs of serving models 
 
@@ -223,16 +159,36 @@ So you may get response as below. It means the model predicts the input data as 
     "predictions": [[2.04608277e-05, 1.72721537e-09, 7.74099826e-05, 0.00364777888, 1.25222812e-06, 2.27521778e-05, 1.14668968e-08, 0.99597472, 3.68833353e-05, 0.000218785644]]
 }
 ```
-
-6\. Delete one serving job
+6\.View the actual memory usage of tf-serving task.
+log in your  node.
+```
+#nvidia-smi
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 410.72       Driver Version: 410.72       CUDA Version: 10.0     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  Tesla V100-SXM2...  Off  | 00000000:00:08.0 Off |                    0 |
+| N/A   34C    P0    51W / 300W |   3753MiB / 16130MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|    0     20840      C   /usr/bin/tensorflow_model_server            3743MiB |
++-----------------------------------------------------------------------------+
+```
+7\. Delete one serving job
 
 You can use the following command to delete a tfserving job and its associated pods
                                      
 ```
-# arena serve delete mymnist1
-configmap "mymnist1-tensorflow-serving-cm" deleted
-service "mymnist1-tensorflow-serving" deleted
-deployment.extensions "mymnist1-tensorflow-serving" deleted
-configmap "mymnist1-tf-serving" deleted
-INFO[0000] The Serving job mymnist1 has been deleted successfully
+# arena serve delete mymnist2
+configmap "mymnist2-tensorflow-serving-cm" deleted
+service "mymnist2-tensorflow-serving" deleted
+deployment.extensions "mymnist2-tensorflow-serving" deleted
+configmap "mymnist2-tf-serving" deleted
+INFO[0000] The Serving job mymnist2 has been deleted successfully
 ```
