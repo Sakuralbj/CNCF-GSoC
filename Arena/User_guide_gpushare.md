@@ -15,7 +15,15 @@ Fraction that each process occupies of the GPU memory space the value is between
 If 1.0, the server will allocate all the memory when the server starts,   
 If 0.0, Tensorflow will automatically select a valupe.
 
-2.2 The design  diagram.
+2.2 The design logic.
+per_process_gpu_memory_fraction=GPUMemory(User allocated)/total GPUMemory(The total GPUMemory in the allocated GPU card)
+
+After we submit the serving task,the values will be transformed into yaml.
+After GPUShare-scheduler and device-plugin,
+total GPUMemory=$Aliyun..
+ALIYUN_COM_GPU_MEM_CONTAINER'/'$ALIYUN_COM_GPU_MEM_DEV
+
+2.3 The design  diagram.
 
 3\. Tensorflow serving with GPUMemory
 
