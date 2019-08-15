@@ -4,7 +4,7 @@ This guide walks through the steps required to deploy and serve a TensorFlow mod
 
 Before using `Arena` for TensorFlow serving with GPU, we need to setup the environment including Kubernetes cluster.
 
-Make sure that your Kubernetes cluster is running,and there is  gpu resource in your cluster.
+Make sure that your Kubernetes cluster is running and follow the Kubernetes [instructions for enabling GPUs](https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/).
 
 
 2\. Create Persistent Volume for Model Files
