@@ -11,7 +11,8 @@ gpushare-schd-extender-6866868cf5-bb9fc                      1/1     Running
 
 2\. The design of tf-serving with GPUShare. 
 
-2.1 per_process_gpu_memory_fraction
+2.1 per_process_gpu_memory_fraction  
+
 Fraction that each process occupies of the GPU memory space. The value is between 0.0 and 1.0 (with 0.0 as the default)   
 If 1.0, the server will allocate all the memory when the server starts,   
 If 0.0, Tensorflow will automatically select a valupe.
