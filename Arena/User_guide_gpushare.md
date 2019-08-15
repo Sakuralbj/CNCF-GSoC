@@ -27,6 +27,7 @@ per_process_gpu_memory_fraction=required GPUMemory/total GPUMemory in GPU card.
 * per_process_gpu_memory_fraction=$ALIYUN_COM_GPU_MEM_CONTAINER/$ALIYUN_COM_GPU_MEM_DEV
 
 2.3 The design  diagram.
+![](https://ws3.sinaimg.cn/large/006tNc79gy1g605lvp09aj31ho0je762.jpg)
 
 
 3\. Tensorflow serving with GPUMemory
