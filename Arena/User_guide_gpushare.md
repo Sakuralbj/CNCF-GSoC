@@ -19,7 +19,8 @@ If 0.0, Tensorflow will automatically select a valupe.
 
 For example, If we want the serving job to occupy half of the GPU resources,we can set per_process_gpu_memory_fraction equals to 0.5.
 
-2.2 The design process.  
+2.2 The design process.   
+ 
 Goals:After users submit the serving task,we need to calculate the correct per_process_gpu_memory_fraction.  
 
 per_process_gpu_memory_fraction=required GPUMemory/total GPUMemory in GPU card.
