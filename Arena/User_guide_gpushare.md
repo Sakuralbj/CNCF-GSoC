@@ -9,32 +9,7 @@ gpushare-device-plugin-ds-4src6                              1/1     Running
 gpushare-schd-extender-6866868cf5-bb9fc                      1/1     Running
 ```  
 
-2\. The design of tf-serving with GPUShare. 
-
-2.1 per_process_gpu_memory_fraction  
-
-Fraction that each process occupies of the GPU memory space. The value is between 0.0 and 1.0 (with 0.0 as the default)   
-If 1.0, the server will allocate all the memory when the server starts,   
-If 0.0, Tensorflow will automatically select a valupe.  
-
-For example, If we want the serving job to occupy half of the GPU resources,we can set per_process_gpu_memory_fraction equals to 0.5.
-
-2.2 The design process.   
- 
-Goals:After users submit the serving task,we need to calculate the correct per_process_gpu_memory_fraction.  
-
-per_process_gpu_memory_fraction=required GPUMemory/total GPUMemory in GPU card.
-
-* The gpumemory serving task requires will be transformed into spec.container.resource.limits.aliyun.com/gpu-mem.
-* After GPUShare scheduler-extender and device-plugin,environmental variable will be generated.  
-* Required GPUMemory equals to ALIYUN_COM_GPU_MEM_CONTAINER,total GPUMemory in GPU card equals to ALIYUN_COM_GPU_MEM_DEV.
-* per_process_gpu_memory_fraction=$ALIYUN_COM_GPU_MEM_CONTAINER/$ALIYUN_COM_GPU_MEM_DEV
-
-2.3 The design  diagram.
-![](https://ws3.sinaimg.cn/large/006tNc79gy1g605lvp09aj31ho0je762.jpg)
-
-
-3\. Tensorflow serving with GPUMemory
+2\. Tensorflow serving with GPUMemory
 
 You can deploy and serve a Tensorflow model with GPUMemory.
 
@@ -119,14 +94,14 @@ Total :                                       15
 Allocated/Total GPU Memory In GPUShare Node:
 3/15 (GiB) (20%)  
 ```
-4\. List all the serving jobs
+3\. List all the serving jobs
 ```
 #arena serve list
 NAME      TYPE        VERSION  DESIRED  AVAILABLE  ENDPOINT_ADDRESS  PORTS
 mymnist2  TENSORFLOW           1        1          172.19.0.222      serving:8500,http-serving:8501
 ```  
 
-5\. Test RESTful APIs of serving models 
+4\. Test RESTful APIs of serving models 
 
 Deploy the `sleep` pod so you can use `curl` to test above serving models via RESTful APIs.
 
@@ -176,7 +151,7 @@ So you may get response as below. It means the model predicts the input data as 
     "predictions": [[2.04608277e-05, 1.72721537e-09, 7.74099826e-05, 0.00364777888, 1.25222812e-06, 2.27521778e-05, 1.14668968e-08, 0.99597472, 3.68833353e-05, 0.000218785644]]
 }
 ```
-6\.View the actual memory usage of tf-serving task.
+5\.View the actual memory usage of tf-serving task.
 log in your  node.
 ```
 #nvidia-smi
@@ -197,7 +172,7 @@ log in your  node.
 |    0     20840      C   /usr/bin/tensorflow_model_server            3743MiB |
 +-----------------------------------------------------------------------------+
 ```
-7\. Delete one serving job
+6\. Delete one serving job
 
 You can use the following command to delete a tfserving job and its associated pods
                                      
