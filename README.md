@@ -24,25 +24,22 @@ Mentor:  **Harry Zhang** (@resouer) ,**Kai Zhang**(@wsxiaozhang) ,**Jian He** (@
 
 ### Code
 [tf-serving-gpushare](https://github.com/kubeflow/arena/pull/211)  
-[View GPU resource of cluster](https://github.com/kubeflow/arena/pull/226)
+[View GPU resource of cluster](https://github.com/kubeflow/arena/pull/226)  
 [User_guide](https://github.com/kubeflow/arena/pull/250)
 
 
 
-#### Stage2:Integrate Nvidia MPS as the option for isolation
-
+## Stage 2:Integrate Nvidia MPS as the option for isolation
+### Achievement
 * Investigate how to use MPS.
 * Test the capacity of MPS.  
-* Integrate MPS with GPUShare,simplify the operation of Users.
+* Integrate MPS with GPUShare,simplify user operations.  
 
+### Design and result
 
 ### Code
-#### arena
-[pr1](https://github.com/kubeflow/arena/pull/226) view GPU resource of the cluster  
 
-[pr211](https://github.com/kubeflow/arena/pull/211) integrate tf-serving with GPUMemory
 
-#### MPS
 
 
 
