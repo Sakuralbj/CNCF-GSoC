@@ -6,7 +6,7 @@ Mentor:  **Harry Zhang** (@resouer) ,**Kai Zhang**(@wsxiaozhang) ,**Jian He** (@
 ----
 
 ### Project description  
-[GPUSharing]((https://github.com/AliyunContainerService/gpushare-scheduler-extender)) is an open source project which could share GPU by leveraging Kubernetes scheduling and Device Plugin extensibility.  
+[GPUSharing](https://github.com/AliyunContainerService/gpushare-scheduler-extender) is an open source project which could share GPU by leveraging Kubernetes scheduling and Device Plugin extensibility.  
 [Arena](https://github.com/kubeflow/arena) is a command-line interface for the data scientists to run and monitor the machine learning training jobs and check their results in an easy way.   Currently it supports solo/distributed TensorFlow training. In the backend, it is based on Kubernetes, helm and Kubeflow. But the data scientists can have very little knowledge about kubernetes.  It's goal is to make the data scientists feel like to work on a single machine but with the Power of GPU clusters indeed.
 
   
@@ -14,12 +14,20 @@ Mentor:  **Harry Zhang** (@resouer) ,**Kai Zhang**(@wsxiaozhang) ,**Jian He** (@
 * Integrate arena with GPUSharing in tensorflow-serving situation.
 * Integrate Nvidia MPS as the option for isolation
 
-## Stage1:Integrate arena with GPUSharing in tensorflow-serving situation.
-### arena
-* Finish a end to end tf-serving task using GPUMemory.  
-* Check the GPUMemory resource of K8s cluster  
-* Finish a User guide of tf-serving with GPUMemory.
+## Stage 1:Integrate arena with GPUSharing in tensorflow-serving situation.
+### Achievement
+* Finish an end to end tf-serving task using GPUMemory.  
+* Check the GPUMemory resource of K8s cluster. 
+* Finish a User_guide of tf-serving with GPUMemory.
+### Design  
+[The design of tf-serving-gpushare](Arena/Design.md)
+
 ### Code
+[tf-serving-gpushare](https://github.com/kubeflow/arena/pull/211)  
+[View GPU resource of cluster](https://github.com/kubeflow/arena/pull/226)
+[User_guide](https://github.com/kubeflow/arena/pull/250)
+
+
 
 #### Stage2:Integrate Nvidia MPS as the option for isolation
 
