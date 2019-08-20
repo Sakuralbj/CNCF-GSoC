@@ -36,14 +36,19 @@ Mentor:  **Harry Zhang** (@resouer) ,**Kai Zhang**(@wsxiaozhang) ,**Jian He** (@
 * Integrate MPS with GPUShare,simplify user operations.  
 
 ### Design and result
+* Use [MPS](MPS/MPSUserGuide.md)  
+* Test [result](MPS/实验结果展示.md)
+* Integratate [design](MPS/Design.md)
+
 
 ### Code
+[User_guide and Integration](https://github.com/AliyunContainerService/gpushare-device-plugin/pull/14)
 
 
+### To do
+Test if  GPU thread is controled by MPS.  
 
+Reference:
+1. [nvprof](https://devblogs.nvidia.com/cuda-pro-tip-nvprof-your-handy-universal-gpu-profiler/)
 
-
-
-### to do
-Find 
 
