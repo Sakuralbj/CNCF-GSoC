@@ -37,7 +37,7 @@ Mentor:  **Harry Zhang** (@resouer) ,**Kai Zhang**(@wsxiaozhang) ,**Jian He** (@
 
 ### Design and result
 * Use [MPS](MPS/MPSUserGuide.md)  
-* Test [result](MPS/实验结果展示.md)
+* Test [result](MPS/TestResult.md)
 * Integratate [design](MPS/Design.md)
 
 
@@ -48,7 +48,8 @@ Mentor:  **Harry Zhang** (@resouer) ,**Kai Zhang**(@wsxiaozhang) ,**Jian He** (@
 ### To do
 Test if  GPU thread is controled by MPS.  
 
-Reference:
-1. [nvprof](https://devblogs.nvidia.com/cuda-pro-tip-nvprof-your-handy-universal-gpu-profiler/)
+Reference:  
+1. [MPS](https://docs.nvidia.com/deploy/mps/index.html#topic_2_1_2)
+2. [nvprof](https://devblogs.nvidia.com/cuda-pro-tip-nvprof-your-handy-universal-gpu-profiler/)
 
 
