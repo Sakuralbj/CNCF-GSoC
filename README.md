@@ -38,7 +38,7 @@ Mentor:  **Harry Zhang** (@resouer) ,**Kai Zhang**(@wsxiaozhang) ,**Jian He** (@
 ### Design and result
 * Use [MPS](MPS/MPSUserGuide.md)  
 * Test [result](MPS/TestResult.md)
-* Integratate [design](MPS/Design.md)
+* Integratate [design](MPS/DesignMPS.md)
 
 
 ### Code
