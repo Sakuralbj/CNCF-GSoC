@@ -21,17 +21,17 @@ Being able to participate in GSoC is a lucky thing for me. In the past three mon
 * Check the GPUMemory resource of kubernetes cluster. 
 * Finish a user_guide of tf-serving with GPUShare.
 ### Design    
-####  
-##### 1. per_process_gpu_memory_fraction  
+ 
+#### 1. per_process_gpu_memory_fraction  
 Per_process_gpu_memory_fraction is a fraction that each process occupies of the GPU memory space. The value is between 0.0 and 1.0 (with 0.0 as the default)   
 If 1.0, the server will allocate all the memory when the server starts,   
 If 0.0, Tensorflow will automatically select a valupe.  
 
 For example, If we want the serving job to occupy half of the GPU resources,we can set per_process_gpu_memory_fraction equals to 0.5.
 
-##### 2. The design process.   
+#### 2. The design process.   
  
-Goals:After users submit the serving task,we need to calculate the correct per_process_gpu_memory_fraction and convert it as a parameter oo serving-task.  
+Goals:After users submit the serving task,we need to calculate the correct per_process_gpu_memory_fraction and convert it as a parameter of serving-task.  
 
 per_process_gpu_memory_fraction=(required GPUMemory)/(total GPUMemory in allocated GPU card).
 
