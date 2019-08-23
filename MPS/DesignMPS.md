@@ -116,5 +116,5 @@ type NvidiaDevicePlugin struct {
   Description:   
   EnvResourceByContainer stands for GPUmemory on behalf of the container, EnvPipe is CUDA_MPS_PIPE_DIRECTORY, EnvPercentage stands for CUDA_MPS_ACTIVE_THREAD_PERCENTAGE and controls gpu resource usage.
      
-### 流程图
+### The design  diagram
 ![Design](https://ws3.sinaimg.cn/large/006y8mN6ly1g69e8c3xotj31cx0u0dm5.jpg) 
