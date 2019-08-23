@@ -41,13 +41,13 @@ per_process_gpu_memory_fraction=(required GPUMemory)/(total GPUMemory in allocat
 * per_process_gpu_memory_fraction=$ALIYUN_COM_GPU_MEM_CONTAINER/$ALIYUN_COM_GPU_MEM_DEV  
 * If in GPUShare situation,convert per_process_gpu_memory_fraction in the task.
 
-##### 3. The design  diagram.
+#### 3. The design  diagram.
 ![](https://ws3.sinaimg.cn/large/006tNc79gy1g605lvp09aj31ho0je762.jpg)
 
-### Code
-[tf-serving-gpushare](https://github.com/kubeflow/arena/pull/211)  
-[View GPU resource of cluster](https://github.com/kubeflow/arena/pull/226)  
-[User_guide](https://github.com/kubeflow/arena/pull/250)
+### Code  
+* [tf-serving-gpushare](https://github.com/kubeflow/arena/pull/211)    
+* [View GPU resource of cluster](https://github.com/kubeflow/arena/pull/226)    
+* [User_guide](https://github.com/kubeflow/arena/pull/250)
 
 
 
