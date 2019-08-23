@@ -5,7 +5,7 @@
 ### Result  
 
 1. nbody task. 
- ![Result](https://ws1.sinaimg.cn/large/006tNc79ly1g3xgcy9m3uj318e0h2dhc.jpg)
+ ![Result](https://ws2.sinaimg.cn/large/006y8mN6ly1g69ey8cs2bj315409amya.jpg)
 2. tensorflow task,no GPUUsage limit.  
  ![Result](https://ws4.sinaimg.cn/large/006tNc79ly1g4s7ubcv4oj315a09mjsm.jpg)  
 3. tensorflow task,tf_config.gpu_options.allow_growth = True
