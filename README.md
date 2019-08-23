@@ -5,7 +5,7 @@ Mentor:  **Harry Zhang** (@resouer) ,**Kai Zhang**(@wsxiaozhang) ,**Jian He** (@
   
 ----
 ### Overview    
-Being able to participate in GSoC is a lucky thing for me. In the past three months, I have improved my engineering ability with the help of my mentors. I am very grateful for this. Now that gsoc 2019 is almost over, this is my summary of this stage of work.
+Being able to participate in GSoC is a lucky thing for me. In the past three months, I have improved my engineering ability with the help of my mentors. I am very grateful for this. Now  GSoC 2019 is nearly over, this is my summary of this stage of work.
 ### Project description  
 [GPUSharing](https://github.com/AliyunContainerService/gpushare-scheduler-extender) is an open source project which could share GPU by leveraging Kubernetes scheduling and Device Plugin extensibility.  
 [Arena](https://github.com/kubeflow/arena) is a command-line interface for the data scientists to run and monitor the machine learning training jobs and check their results in an easy way.In the backend, it is based on Kubernetes, helm and Kubeflow. But the data scientists can have very little knowledge about kubernetes.  It's goal is to make the data scientists feel like to work on a single machine but with the Power of GPU clusters indeed.
