@@ -1,8 +1,3 @@
----
-title: "Integrate Device-plugin with MPS"
-date: 2019-08-10
-draft: false
----
 
 ## Goal  
 Inject volume information and environment variable into the container in device-plugin part of GPUShare to simplify the operation of users.
@@ -122,4 +117,4 @@ type NvidiaDevicePlugin struct {
   EnvResourceByContainer stands for GPUmemory on behalf of the container, EnvPipe is CUDA_MPS_PIPE_DIRECTORY, EnvPercentage stands for CUDA_MPS_ACTIVE_THREAD_PERCENTAGE and controls gpu resource usage.
      
 ### 流程图
-![Design](https://ws1.sinaimg.cn/large/006tNc79ly1g4v15g25ohj31ed0u0tf4.jpg) 
+![Design](https://ws3.sinaimg.cn/large/006y8mN6ly1g69e8c3xotj31cx0u0dm5.jpg) 
