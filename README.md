@@ -1,4 +1,4 @@
-# Summary of GSoC 2019 (Run GPU sharing workloads with Kuberneres + kubeflow )
+# Summary of GSoC 2019 (Run GPU sharing workloads with Kubernetes + kubeflow )
 Student: **Jianbo Ma**(majb2114@zju.edu.cn)  
 
 Mentor:  **Harry Zhang** (@resouer) ,**Kai Zhang**(@wsxiaozhang) ,**Jian He** (@jian-he)    
